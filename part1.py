@@ -74,6 +74,11 @@ def run_part1():
 
     # Sign and Broadcast B -> C
     signed_tx_BC = rpc.signrawtransactionwithwallet(raw_tx_BC)
+    
+    print("\nSigned TX Hex (B -> C):")
+    print(signed_tx_BC["hex"])
+
+
     txid_BC = rpc.sendrawtransaction(signed_tx_BC["hex"])
     print(f"Broadcasted B -> C. TXID: {txid_BC}")
     rpc.generatetoaddress(1, rpc.getnewaddress()) # Mine 1 block to confirm
@@ -82,6 +87,11 @@ def run_part1():
     decoded_signed_BC = rpc.decoderawtransaction(signed_tx_BC["hex"])
     print("\n--- Decoded Signed TX (B -> C) showing scriptSig ---")
     print(json.dumps(decoded_signed_BC["vin"], indent=2, default=decimal_default))
+    # Add this at the very end of part1.py inside run_part1()
+    print("\n--- Size Comparison Metrics (Legacy) ---")
+    print(f"Size:   {decoded_signed_BC['size']} bytes")
+    print(f"vSize:  {decoded_signed_BC['vsize']} vbytes")
+    print(f"Weight: {decoded_signed_BC['weight']}")
 
 if __name__ == "__main__":
     run_part1()
